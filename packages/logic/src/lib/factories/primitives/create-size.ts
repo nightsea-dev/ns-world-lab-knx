@@ -1,0 +1,13 @@
+import { Size } from "@ns-lab-klx/types";
+export const EMPTY_Size = Object.freeze({
+    width: 0
+    , height: 0
+} as Size)
+
+
+    , createSize = (
+        o = {} as Partial<Size>
+    ): Size => ({
+        ...EMPTY_Size
+        , ...o
+    })

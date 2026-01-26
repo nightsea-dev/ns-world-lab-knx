@@ -1,0 +1,20 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "apps/admin"
+        },
+        {
+            "path": "apps/board"
+        },
+        {
+            "path": "packages/types"
+        },
+        {
+            "path": "packages/logic"
+        },
+        {
+            "path": "packages/ui"
+        }
+    ]
+}

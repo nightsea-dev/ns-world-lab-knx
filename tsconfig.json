@@ -1,0 +1,22 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compileOnSave": false,
+    "files": [],
+    "references": [
+        {
+            "path": "./packages/logic"
+        },
+        {
+            "path": "./packages/types"
+        },
+        {
+            "path": "./packages/ui"
+        },
+        {
+            "path": "./apps/admin"
+        },
+        {
+            "path": "./apps/board"
+        }
+    ]
+}

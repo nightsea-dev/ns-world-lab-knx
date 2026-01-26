@@ -1,0 +1,10 @@
+{
+  "name": "@ns-lab-klx/board",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@ns-lab-klx/types": "file:../../packages/types",
+    "@ns-lab-klx/logic": "file:../../packages/logic",
+    "@ns-lab-klx/ui": "file:../../packages/ui"
+  }
+}

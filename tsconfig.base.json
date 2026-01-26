@@ -1,0 +1,46 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "noEmit": true,
+        "declarationMap": true,
+        "emitDeclarationOnly": false,
+        "importHelpers": true,
+        "isolatedModules": true,
+        "lib": [
+            "es2022"
+        ],
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "noEmitOnError": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": false,
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "es2022",
+        "customConditions": [
+            "@ns-lab-klx/source"
+        ],
+        "paths": {
+            "@ns-lab-klx/logic": [
+                "./packages/logic/src/index.ts"
+            ],
+            "@ns-lab-klx/logic/*": [
+                "./packages/logic/src/*"
+            ],
+            "@ns-lab-klx/types": [
+                "./packages/types/src/index.ts"
+            ],
+            "@ns-lab-klx/types/*": [
+                "./packages/types/src/*"
+            ],
+            "@ns-lab-klx/ui": [
+                "./packages/ui/src/index.ts"
+            ],
+            "@ns-lab-klx/ui/*": [
+                "./packages/ui/src/*"
+            ]
+        }
+    }
+}
