@@ -1,36 +1,35 @@
 import {
     HasId
-    , HasPayload
     , Position
     , Transformation
-    , PayloadWithKind
-    , GraphNodeWithAnyPayloadAndTransformationMutators,
-    GraphNodeWithTransformMutators,
-    EventHandlersFromMap,
-    KeyOf,
-    Size,
-    GraphNode
+    , GraphNodeWithTransformMutators
+    , EventHandlersFromMap
+    , KeyOf
+    , Size
 } from "@ns-lab-klx/types"
 import {
     createID
     , createTransform
 } from "../../factories"
-import { action, makeObservable, observable } from "mobx"
+import {
+    action
+    , makeObservable
+    , observable
+} from "mobx"
 
 
 // ======================================== events
-export type SpatialNodeData =
-    Pick<SpatialNode, "size" | "position">
-
 export type SpatialNodeEventsMap = {
-    change:
-    & {
-        k: KeyOf<SpatialNodeData>
-        node: SpatialNodeData
+    change: {
+        k: KeyOf<Transformation>
+        node: Transformation
     }
 }
-// ======================================== props
-export type SpatialNodeProps
+export type SpatialNodeEventHandlers =
+    EventHandlersFromMap<SpatialNodeEventsMap>
+
+// ======================================== input/props
+export type SpatialNodeInput
     =
     & Partial<
         & HasId
@@ -38,8 +37,10 @@ export type SpatialNodeProps
         & {
             isObservable: boolean
         }
-        & EventHandlersFromMap<SpatialNodeEventsMap>
+        & SpatialNodeEventHandlers  //EventHandlersFromMap<SpatialNodeEventsMap>
     >
+
+
 
 // ======================================== class
 /**
@@ -48,10 +49,12 @@ export type SpatialNodeProps
  */
 export class SpatialNode
     // implements GraphNode {
-    implements GraphNodeWithTransformMutators {
+    implements
+    GraphNodeWithTransformMutators
+    , Pick<SpatialNodeInput, "onChange"> {
 
     id: string
-    readonly _transformation: Transformation
+    private readonly _transformation: Transformation
     get transformation() {
         return { ...this._transformation }
     }
@@ -66,7 +69,7 @@ export class SpatialNode
 
     }
 
-    onChange: SpatialNodeProps["onChange"]
+    onChange: SpatialNodeInput["onChange"]
 
     constructor({
         id = createID()
@@ -74,7 +77,7 @@ export class SpatialNode
         , size
         , isObservable
         , onChange
-    }: SpatialNodeProps
+    }: SpatialNodeInput
     ) {
 
         this.id = id
@@ -103,7 +106,7 @@ export class SpatialNode
     }
 
     private _emit(
-        k: KeyOf<SpatialNodeData>
+        k: KeyOf<Transformation>
     ) {
         this.onChange?.({
             k
@@ -145,35 +148,25 @@ export class SpatialNode
 
 
 
-// // -------------------------------------------------- w/payload - props
-// export type SpatialNodeWithPayloadProps<
-//     P extends any | PayloadWithKind<any> = unknown
-// >
-//     =
-//     & SpatialNodeProps
-//     & HasPayload<P>
+// ======================================== U lexicon/ exports
+export type SpatialNodeData =
+    Pick<SpatialNode, | "id" | "size" | "position">
 
+export type SpatialNode_UI
+    = Pick<
+        SpatialNode,
+        | "id"
+        | "size"
+        | "position"
+        // keeping these to remain within the [KLX] base
+        | "updatePosition"
+        | "updateSize"
 
-// // -------------------------------------------------- w/payload - component
-// /**
-//  * * can be [observable]
-//  * * uses [mobx]
-//  */
-// export class SpatialNodeWithPayload<
-//     P extends any | PayloadWithKind<any> = unknown
-// >
-//     extends SpatialNode
-//     implements GraphNodeWithAnyPayloadAndTransformationMutators<P> {
+        | "updateTransformation"
+        | "transformation"
+    >
 
-//     payload: P
-
-//     constructor({
-//         payload
-//         , ...rest
-//     }: SpatialNodeWithPayloadProps<P>
-//     ) {
-//         super(rest)
-//         this.payload = payload
-//     }
-
-// }
+export type HasSpatialNode_UI =
+    & {
+        spatialNode: SpatialNode_UI
+    }

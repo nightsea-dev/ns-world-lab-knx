@@ -107,7 +107,7 @@ packages/
 packages/core/models → ["scope:core","layer:models"]
 packages/core/state → ["scope:core","layer:state"]
 packages/domain/types → ["scope:domain","layer:types"]
-packages/ui/components → ["scope:ui","layer:components"]
+packages/web/components → ["scope:ui","layer:components"]
 packages/utils/core → ["scope:utils","layer:core"]
 packages/utils/render → ["scope:utils","layer:render"]
 packages/dev/fixtures → ["scope:dev"]

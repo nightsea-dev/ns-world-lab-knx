@@ -1,0 +1,15 @@
+.data-table-rs [role="row"] {
+    transition: all linear .1s;
+}
+
+.data-table-rs [role="row"][data-is-selected="true"] [role="gridcell"],
+.data-table-rs [role="row"][data-is-selected="true"] [role="gridcell"]:hover {
+    /* background-color: dodgerblue; */
+    /* background-color: rgb(59 130 246 / var(--tw-bg-opacity)); */
+    background-color: rgba(59, 130, 246, 1);
+    color: white;
+}
+
+.data-table-rs [role="row"]:hover {
+    background-color: rgba(0, 0, 0, .02);
+}

@@ -10,13 +10,10 @@
             "path": "./packages/types"
         },
         {
-            "path": "./packages/ui"
+            "path": "./packages/web"
         },
         {
-            "path": "./apps/admin"
-        },
-        {
-            "path": "./apps/board"
+            "path": "./apps/main-app"
         }
     ]
 }

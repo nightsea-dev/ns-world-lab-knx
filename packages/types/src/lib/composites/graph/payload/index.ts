@@ -1,1 +1,1 @@
-export * from "./node-payload-with-kind"
+export * from "./payload-with-kind"

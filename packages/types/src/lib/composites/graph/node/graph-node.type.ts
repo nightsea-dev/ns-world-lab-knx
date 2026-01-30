@@ -3,6 +3,7 @@ import {
     HasTransformation
     , HasTransformationMutators
 } from "../../../contracts";
+import { HasId } from "../../../primitives";
 import { PayloadWithKind } from "../payload";
 
 
@@ -23,6 +24,7 @@ export type GraphNode =
 export type GraphNodeWithAnyPayload<
     P extends any = unknown //PayloadWithKind<any>
 > =
+    & HasId
     & GraphNode
     & HasPayload<P>
 
@@ -51,19 +53,5 @@ export type GraphNodeWithAnyPayloadAndTransformationMutators<
 export type GraphNodeWithKindedPayloadAndTransformationMutators<
     P extends PayloadWithKind<any>
 > = GraphNodeWithAnyPayloadAndTransformationMutators<P>
-
-
-
-
-
-
-
-// ---------------------------------------- capabilities
-export type HasGraphNode<
-    G extends GraphNode
->
-    = {
-        node: G
-    }
 
 

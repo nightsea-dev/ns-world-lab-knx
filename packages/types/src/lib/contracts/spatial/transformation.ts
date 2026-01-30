@@ -1,6 +1,8 @@
-import { HasPosition, HasSize, Position, Size } from "../primitives"
 
 // contract
+
+import { HasPosition, HasSize, Position, Size } from "../../primitives"
+
 /**
  * ---
  * SpatialTransformation

@@ -1,67 +1,44 @@
-# Klaxoon - Frontend take home test
+# NS-WORLD-LAB-KLX
 
-The project has been set up with `node` version **22.16.0** and `npm` version **10.9.2**.
+Nx monorepo containing two apps and three workspace packages.
 
-## Technical stack
+## Repository layout
 
--   `nx` (monorepo)
--   `rspack` (bundler)
--   `eslint`
--   `prettier`
--   `react`
--   `typescript`
--   `tailwinds`
+- apps/
+  - admin/  React app (Rspack)
+  - board/  React app (Rspack)
+- packages/
+  - logic/  Runtime logic library (emits JS + types)
+  - types/  Types-only library (emit declarations only; import type only)
+  - web/    Shared React components, layout, and UI primitives (runtime)
 
-## Libs
+## Core rules (do not break)
 
--   `mobx`
--   `react-rnd`
--   `@faker-js/faker`
--   `@emotion/react`
+- Bundlers (Rspack) do not read TypeScript path aliases.
+  Runtime resolution is via node_modules and each package's package.json exports/main.
+- packages/types is types-only:
+  always `import type { ... } from "@ns-lab-klx/types"`.
+  Never require it at runtime.
+- packages/logic and packages/web are runtime libraries:
+  they must emit JS to dist/ and package.json must point to dist entrypoints.
+- Avoid self-imports inside a package:
+  do not import "@ns-lab-klx/web" from within packages/web.
 
-## First steps
+## Build and clean
 
--   Install dependencies : `npm install`
--   Start apps :
-    -   board : `npm run serve:board`
-    -   admin : `npm run serve:admin`
+Canonical clean (run from repo root):
 
-## App description
+- nx reset
+- tsc -b tsconfig.build.json --clean
 
-The current monorepo is composed of 2 apps : `board` and `admin` ; and 2 packages : `models` and `ui`.
+Build order is controlled by TypeScript project references.
+Rspack uses package outputs, not source.
 
-### `board` app
+## Tailwind CSS
 
--   This is a basic whiteboard app that displays a single type of object : ideas.
--   They can be moved and resized on the board.
+Tailwind is configured once at repo root:
 
-### `admin` app
+- tailwind.config.mjs
+- postcss.config.mjs
 
--   This is a basic app that displays a list of users in a table after being fetched.
--   There is also a button for showing and hiding a clock.
-
-## Expectations
-
-### Board : New object types
-
--   Update the whiteboard in order to handle 2 new object types : **images** and **iframes**.
-
-An image object that can be added to the board with an input file.
-
-An iframe object that can be added to the board with a button that shows a form asking for the iframe url.
-
-Keep in mind that the board need to scalable : some other new board object types can be added or existing ones can updated in the future.
-
-Feel free to update the apps and packages for a better project **architecture** and **state management** (global and/or local). You can also add unit tests if you feel like it.
-
--   A bug has also been spotted by our team : the resize of a board object is not always working, can you help us fix it?
-
--   Apps need to be operational for a live demo.
-
----
-
-### Admin : Improvements
-
--   We're not very proud of how the `admin` app has been made, it seems to be **buggy** and have some **performance** issues.
-
-Could you take a look and help use improve it ?
+Each app imports its own CSS entry in apps/<app>/src/styles/styles.css.

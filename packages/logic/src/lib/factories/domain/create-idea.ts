@@ -2,9 +2,12 @@ import { faker } from '@faker-js/faker'
 import { createID } from '../primitives'
 import { Idea, IdeaWithAuthor } from '@ns-lab-klx/types'
 import { createUser } from './create-user'
-import { getRandomColour } from '../render'
+import { getRandomColour } from '../../utils'
 
-
+/**
+ * * depends on 
+ *      * [faker]
+ */
 export const createIdea = (
     o = {} as Partial<Idea>
 ): Idea => {
@@ -13,7 +16,7 @@ export const createIdea = (
         id: createID()
         , title: faker.word.sample() + ' + Idea'
         , content: faker.lorem.paragraph(1)
-        , color: getRandomColour()
+        , color: getRandomColour().toRgbString()
         , ...o
         // , author: createUser(o.)
         // , author: {

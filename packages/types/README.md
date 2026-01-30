@@ -1,7 +1,20 @@
-# @ns-lab-klx/logic
+# @ns-lab-klx/types
 
-This library was generated with [Nx](https://nx.dev).
+Types-only library.
 
-## Running unit tests
+## Purpose
 
-Run `nx test @ns-lab-klx/logic` to execute the unit tests via [Jest](https://jestjs.io).
+- Shared TypeScript contracts and type utilities used across the repo
+
+## Build output
+
+- Emits declarations only (d.ts) to dist/
+- Must never be required at runtime
+
+## Import rules
+
+Always use type-only imports:
+
+- import type { Something } from "@ns-lab-klx/types"
+
+If you see runtime imports from this package, treat it as a build-breaking bug.

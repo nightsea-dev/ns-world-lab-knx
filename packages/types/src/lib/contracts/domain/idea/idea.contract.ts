@@ -1,8 +1,7 @@
 import {
     HasColor, HasContent, HasKind, HasTitle
-
-} from "../../../capabilities/index.js"
-import { HasId } from "../../primitives/id.js"
+} from "../../../capabilities"
+import { HasId } from "../../../primitives"
 
 // ---------------------------------------- contracts
 export type Idea =

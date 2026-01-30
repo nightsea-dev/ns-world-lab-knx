@@ -3,7 +3,8 @@ import { HasId, HasPartialId, ID } from "@ns-lab-klx/types";
 
 
 /**
- * * [uuid] dependant
+ * * depends on 
+ *      * [uuid]
  */
 export const createID = (): ID => uuidv4()
 

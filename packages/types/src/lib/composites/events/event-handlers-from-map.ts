@@ -1,4 +1,5 @@
-import { KeyOf } from "../../ts";
+import { HasKind } from "../../capabilities"
+import { KeyOf } from "../../ts"
 
 
 export type EventHandler<
@@ -12,3 +13,38 @@ export type EventHandlersFromMap<
 > = {
         [k in KeyOf<EvMap> as `on${Capitalize<k>}`]: EventHandler<EvMap[k]>
     }
+
+
+export type PartialEventHandlersFromMap<
+    EvMap extends Record<string, object>
+> = EventHandlersFromMap<EvMap>
+
+
+
+
+// ========================================
+export type EventHandlersWithKindFromMap<
+    EvMap extends Record<string, object>
+> = {
+        [k in KeyOf<EvMap> as `on${Capitalize<k>}`]: EventHandler<
+            & EvMap[k]
+            & {
+                eventKind: k
+            }
+        >
+    }
+
+
+export type PartialEventHandlersWithKindFromMap<
+    EvMap extends Record<string, object>
+> = Partial<
+    EventHandlersWithKindFromMap<EvMap>
+>
+
+
+
+
+
+
+
+

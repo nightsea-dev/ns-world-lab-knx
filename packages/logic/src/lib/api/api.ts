@@ -1,5 +1,6 @@
 import { User } from "@ns-lab-klx/types"
 import { createUser } from '../factories'
+import { _t } from "../utils"
 
 let firstFetch = true
 
@@ -9,7 +10,7 @@ const waitMs = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 const _fetchUsers = async (
     n = 25
 ): Promise<User[]> => {
-    console.log('Call API to fetch users')
+    console.log(`${_t()} Call API to fetch users`)
     if (!firstFetch) {
         await waitMs(5000)
     } else {
@@ -29,7 +30,9 @@ const _fetchUsers = async (
 
 
 
-
+/**
+ * * faked [API]
+ */
 export const API = {
     fetchUsers: _fetchUsers
 }

@@ -2,7 +2,8 @@ import { faker } from '@faker-js/faker'
 import { User } from '@ns-lab-klx/types'
 
 /**
- * * [faker] dependant
+ * * depends on 
+ *      * [faker]
  */
 export const createUser = (
     o = {} as Partial<User>
