@@ -6,7 +6,7 @@ for spatial graph / board-style UI experimentation.
 This repository separates **runtime logic**, **type contracts**, and **UI components**
 into explicit workspace packages, consumed by one or more apps.
 
----
+
 
 ## Repository layout
 
@@ -19,7 +19,6 @@ packages/
   web/             Shared React UI components and hooks
 ```
 
----
 
 ## Design rules (important)
 
@@ -40,7 +39,6 @@ packages/
   - Runtime React components and hooks
   - Depends on `logic` and `types`
 
----
 
 ### 2. No TS path aliases at runtime
 
@@ -53,7 +51,6 @@ All runtime resolution must go through:
 
 Never rely on TS-only path mapping for runtime imports.
 
----
 
 ### 3. No self-imports inside a package
 
@@ -63,7 +60,6 @@ Inside a package:
 
 Each package must be buildable in isolation.
 
----
 
 ## Build and clean
 
@@ -77,7 +73,6 @@ tsc -b tsconfig.build.json --clean
 Build order is handled via TypeScript project references.
 Applications consume **built package outputs**, not source files.
 
----
 
 ## Styling (Tailwind CSS)
 
@@ -92,7 +87,6 @@ Each app imports its own CSS entry file, for example:
 apps/main-app/src/styles/styles.css
 ```
 
----
 
 ## Dependency graphs
 
@@ -105,13 +99,14 @@ apps/main-app/src/styles/styles.css
 * [web](./docs/web.svg)
 
 
----
+
+
+
 
 ## Status
 
 This repository is under active development and serves as an
 experimental foundation for spatial UI and graph-based interaction models.
 
-
-
-
+## License
+MIT
