@@ -36,22 +36,22 @@ const SIZE_MAP = {
 } as const
 
 // ======================================== types
-export type TwToggleSize = KeyOf<typeof SIZE_MAP>
+export type ToggleTWSize = KeyOf<typeof SIZE_MAP>
 
 // ======================================== props
-export type TwToggleProps =
+export type ToggleTWProps =
     & {
         isChecked: boolean
         isDisabled?: boolean
         checkedChildren?: ReactNode
         unCheckedChildren?: ReactNode
-        size?: TwToggleSize
+        size?: ToggleTWSize
         onChange?: (next: boolean) => void
     }
     & PickHtmlAttributes<"className">
 
 // ======================================== component
-export const TwToggle = ({
+export const ToggleTW = ({
     isChecked
     , isDisabled
     , onChange
@@ -59,7 +59,7 @@ export const TwToggle = ({
     , unCheckedChildren
     , className
     , size = "md"
-}: TwToggleProps) => {
+}: ToggleTWProps) => {
     const s = SIZE_MAP[size]
     const label = isChecked ? checkedChildren : unCheckedChildren
 
