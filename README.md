@@ -1,44 +1,117 @@
 # NS-WORLD-LAB-KLX
 
-Nx monorepo containing two apps and three workspace packages.
+Nx-based monorepo containing frontend applications and shared libraries
+for spatial graph / board-style UI experimentation.
+
+This repository separates **runtime logic**, **type contracts**, and **UI components**
+into explicit workspace packages, consumed by one or more apps.
+
+---
 
 ## Repository layout
 
-- apps/
-  - admin/  React app (Rspack)
-  - board/  React app (Rspack)
-- packages/
-  - logic/  Runtime logic library (emits JS + types)
-  - types/  Types-only library (emit declarations only; import type only)
-  - web/    Shared React components, layout, and UI primitives (runtime)
+```
+apps/
+  main-app/        Primary React application (Vite)
+packages/
+  logic/           Runtime logic (graph state, factories, utils)
+  types/           Types-only package (contracts, composites, primitives)
+  web/             Shared React UI components and hooks
+```
 
-## Core rules (do not break)
+---
 
-- Bundlers (Rspack) do not read TypeScript path aliases.
-  Runtime resolution is via node_modules and each package's package.json exports/main.
-- packages/types is types-only:
-  always `import type { ... } from "@ns-lab-klx/types"`.
-  Never require it at runtime.
-- packages/logic and packages/web are runtime libraries:
-  they must emit JS to dist/ and package.json must point to dist entrypoints.
-- Avoid self-imports inside a package:
-  do not import "@ns-lab-klx/web" from within packages/web.
+## Design rules (important)
+
+### 1. Types vs runtime are strictly separated
+
+- `@ns-lab-klx/types`
+  - Types only
+  - Emits declarations only
+  - Must always be imported using `import type`
+  - Never used at runtime
+
+- `@ns-lab-klx/logic`
+  - Runtime library
+  - Emits JavaScript + types
+  - Contains graph state, factories, utilities
+
+- `@ns-lab-klx/web`
+  - Runtime React components and hooks
+  - Depends on `logic` and `types`
+
+---
+
+### 2. No TS path aliases at runtime
+
+Bundlers (Rspack / Vite) do **not** resolve TypeScript path aliases.
+
+All runtime resolution must go through:
+- `node_modules`
+- `package.json` `exports` / `main` fields
+- compiled output in `dist/`
+
+Never rely on TS-only path mapping for runtime imports.
+
+---
+
+### 3. No self-imports inside a package
+
+Inside a package:
+- ❌ `import { X } from "@ns-lab-klx/web"` (from within `packages/web`)
+- ✅ relative imports only
+
+Each package must be buildable in isolation.
+
+---
 
 ## Build and clean
 
-Canonical clean (run from repo root):
+Canonical clean (from repo root):
 
-- nx reset
-- tsc -b tsconfig.build.json --clean
+```bash
+nx reset
+tsc -b tsconfig.build.json --clean
+```
 
-Build order is controlled by TypeScript project references.
-Rspack uses package outputs, not source.
+Build order is handled via TypeScript project references.
+Applications consume **built package outputs**, not source files.
 
-## Tailwind CSS
+---
 
-Tailwind is configured once at repo root:
+## Styling (Tailwind CSS)
 
-- tailwind.config.mjs
-- postcss.config.mjs
+Tailwind is configured once at the repo root:
 
-Each app imports its own CSS entry in apps/<app>/src/styles/styles.css.
+- `tailwind.config.mjs`
+- `postcss.config.mjs`
+
+Each app imports its own CSS entry file, for example:
+
+```
+apps/main-app/src/styles/styles.css
+```
+
+---
+
+## Dependency graphs
+
+#### apps/
+* [main-app](./docs/main-app.svg)
+
+#### packages/
+* [types](./docs/types.svg)
+* [logic](./docs/logic.svg)
+* [web](./docs/web.svg)
+
+
+---
+
+## Status
+
+This repository is under active development and serves as an
+experimental foundation for spatial UI and graph-based interaction models.
+
+
+
+

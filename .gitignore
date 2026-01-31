@@ -44,3 +44,5 @@ zips/**
 **/*.zip
 
 vite.config.*.timestamp*
+
+_docs/**

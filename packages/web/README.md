@@ -1,25 +1,60 @@
 # @ns-lab-klx/web
 
-Shared React components and UI/layout primitives.
+Shared **runtime React library** providing UI components, layout primitives,
+and graph-related visual components for the NS-WORLD-LAB-KLX workspace.
+
+This package contains **no application logic** and **no domain state**.
+It is a consumer of `@ns-lab-klx/logic` and `@ns-lab-klx/types`.
+
+---
 
 ## Purpose
 
-- Layout primitives: Header, Footer, Main, Page
-- UI primitives: buttons, close button, small widgets
-- Graph-related React components and hooks
+This package provides:
+
+### Layout primitives
+Reusable structural components that handle layout concerns only:
+
+- Header / Footer
+- Main / Page / View containers
+
+Layout components must not contain feature or domain logic.
+
+---
+
+### UI primitives
+Small, reusable UI components:
+
+- Buttons and toggles
+- Close buttons
+- Utility widgets
+- RSuite / Tailwind wrappers
+
+---
+
+### Graph & spatial components
+React components and hooks used to render and interact with spatial / graph data:
+
+- SurfaceNode / SpatialNode components
+- BoardSurface and related controls
+- Graph-related hooks (position tracking, rerender triggers)
+
+These components **render and interact** with graph state, but do not own it.
+
+---
 
 ## Build output
 
-- Emits JavaScript and declaration files to dist/
-- package.json must point runtime entrypoints to dist/*.js
+- Emits JavaScript and declaration files to `dist/`
+- `package.json` runtime entrypoints must always point to `dist/*.js`
+- Applications and other packages consume **built output**, never source files
 
-## Import rules
+---
 
-- May import runtime logic from @ns-lab-klx/logic.
-- May import contracts from @ns-lab-klx/types using import type only.
-- Avoid self-imports inside this package (no "@ns-lab-klx/web" imports within packages/web).
+## Import rules (do not break)
 
-## Tailwind
+### Runtime imports
 
-Components use Tailwind utility classes.
-Tailwind compilation is handled by the root PostCSS/Tailwind configuration.
+- May import runtime logic from:
+  ```ts
+  import { ... } from "@ns-lab-klx/logic"
