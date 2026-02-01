@@ -1,6 +1,6 @@
 import { ReactNode, useReducer } from "react"
-import { EventHandlersFromMap, HasNode, PickAndPrefixKeysAndCapitalise, XOR } from "@ns-lab-klx/types"
-import { _t, SpatialNode, SpatialNode_UI, SpatialNodeEventsMap, SpatialNodeInput } from "@ns-lab-klx/logic"
+import { EventHandlersFromMap, HasNode, PickAndPrefixKeysAndCapitalise, XOR } from "@ns-lab-knx/types"
+import { _t, SpatialNode, SpatialNode_UI, SpatialNodeEventsMap, SpatialNodeInput } from "@ns-lab-knx/logic"
 import { _effect, _memo } from "../../utils"
 import { reaction } from "mobx"
 

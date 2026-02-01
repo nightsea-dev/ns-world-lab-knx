@@ -1,4 +1,4 @@
-# @ns-lab-klx/types
+# @ns-lab-knx/types
 
 Types-only library.
 
@@ -15,6 +15,6 @@ Types-only library.
 
 Always use type-only imports:
 
-- import type { Something } from "@ns-lab-klx/types"
+- import type { Something } from "@ns-lab-knx/types"
 
 If you see runtime imports from this package, treat it as a build-breaking bug.

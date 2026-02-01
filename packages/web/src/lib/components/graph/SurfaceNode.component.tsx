@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { getRandomColour, getRandomColourRgbString, HasSpatialNode_UI } from "@ns-lab-klx/logic"
+import { getRandomColour, getRandomColourRgbString, HasSpatialNode_UI } from "@ns-lab-knx/logic"
 import {
     EventHandlersWithKindFromMap
     , HasChildren
@@ -7,7 +7,7 @@ import {
     , KindBase
     , PayloadWithKind,
     XOR
-} from "@ns-lab-klx/types"
+} from "@ns-lab-knx/types"
 import {
     SpatialNodeComponent
     , SpatialNodeComponentEventHandlers, SpatialNodeComponentProps

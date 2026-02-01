@@ -2,19 +2,19 @@ import {
     _effect
     , BoardSurfaceProps
     , BoardSurface
-} from '@ns-lab-klx/web'
+} from '@ns-lab-knx/web'
 import {
     createIdeaWithAuthor
-} from "@ns-lab-klx/logic"
+} from "@ns-lab-knx/logic"
 import {
     IdeaNodeComponent
 } from '../../components'
 import {
     IdeaWithAuthor
-} from '@ns-lab-klx/types'
+} from '@ns-lab-knx/types'
 
 // ======================================== CONST
-const APP_NAME = "@ns-lab-klx/main-app"
+const APP_NAME = "@ns-lab-knx/web"
 // ======================================== props
 export type IdeasBoardProps =
     & Partial<

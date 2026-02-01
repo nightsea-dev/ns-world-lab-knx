@@ -1,4 +1,5 @@
 export * from "./Avatar"
+export * from "./ButtonGroupRS"
 export * from "./ClockWithShowToggle"
 export * from "./CloseButton"
 export * from "./Timer.component"

@@ -3,7 +3,7 @@ import {
     HasPayloadWithKind
     , KindBase
     , PayloadWithKind
-} from "@ns-lab-klx/types"
+} from "@ns-lab-knx/types"
 import {
     ObjectView
 } from "../ui"

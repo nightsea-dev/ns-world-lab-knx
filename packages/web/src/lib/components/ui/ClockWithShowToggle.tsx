@@ -2,7 +2,7 @@ import { Button, Toggle } from 'rsuite'
 import { _cn, _effect, _use_state, PickHtmlAttributes } from '../../utils'
 import { ButtonTw } from '../sanity'
 import { TimerComponent, TimerProps } from './Timer.component'
-import { padNumber as _p } from "@ns-lab-klx/logic"
+import { padNumber as _p } from "@ns-lab-knx/logic"
 
 // ========================================
 export type ClockWithShowToggleProps =

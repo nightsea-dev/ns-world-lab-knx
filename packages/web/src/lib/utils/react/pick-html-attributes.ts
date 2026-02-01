@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { KeyOf } from "@ns-lab-klx/types"
+import { KeyOf } from "@ns-lab-knx/types"
 
 
 

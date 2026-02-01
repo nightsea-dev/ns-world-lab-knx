@@ -2,7 +2,7 @@
     "files": [],
     "references": [
         {
-            "path": "apps/main-app"
+            "path": "apps/web-app"
         },
         {
             "path": "packages/types"

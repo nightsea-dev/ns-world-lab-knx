@@ -6,12 +6,12 @@ import {
     PickRequiredRestPartial,
     Transformation,
     XOR,
-} from "@ns-lab-klx/types"
+} from "@ns-lab-knx/types"
 import { _cn, _effect, _memo, PickCssProperties, PickHtmlAttributes } from "../../utils"
 import {
     _t,
     HasSpatialNode_UI,
-} from "@ns-lab-klx/logic"
+} from "@ns-lab-knx/logic"
 import {
     ComponentProps
 } from "react"

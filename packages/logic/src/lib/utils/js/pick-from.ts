@@ -1,4 +1,4 @@
-import { KeyOf } from "@ns-lab-klx/types";
+import { KeyOf } from "@ns-lab-knx/types";
 import { entriesOf } from "./entries-of.util";
 
 

@@ -2,8 +2,8 @@ import React, { type CSSProperties, type ReactNode, useRef } from "react"
 // import { TagGroup, Tag } from "rsuite"
 import { NoData } from "./NoData"
 import { _memo, CssPosition, PickCssProperties, PickHtmlAttributes } from "../../utils"
-import { HasData, HasDepth, HasHeader, PickAndPrefixKeys, PickAndSuffixKeys, PrefixKeys, PrimitiveValue } from "@ns-lab-klx/types"
-import { _colours, entriesOf, EntriesOfOptions } from "@ns-lab-klx/logic"
+import { HasData, HasDepth, HasHeader, PickAndPrefixKeys, PickAndSuffixKeys, PrefixKeys, PrimitiveValue } from "@ns-lab-knx/types"
+import { _colours, entriesOf, EntriesOfOptions } from "@ns-lab-knx/logic"
 
 
 

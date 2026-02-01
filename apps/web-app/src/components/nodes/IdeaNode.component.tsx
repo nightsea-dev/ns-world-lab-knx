@@ -1,16 +1,16 @@
 import {
     HasPayload,
     IdeaWithAuthor
-} from '@ns-lab-klx/types'
+} from '@ns-lab-knx/types'
 import {
     _cn,
     PayloadRendererProps,
     SurfaceNode
-} from '@ns-lab-klx/web'
+} from '@ns-lab-knx/web'
 import {
     getRandomColour,
     getRandomColourRgbString
-} from "@ns-lab-klx/logic"
+} from "@ns-lab-knx/logic"
 
 
 export type IdeaNodeProps =

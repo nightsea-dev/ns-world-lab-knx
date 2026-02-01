@@ -1,4 +1,4 @@
-import { EntryOf } from "@ns-lab-klx/types"
+import { EntryOf } from "@ns-lab-knx/types"
 
 export type EntriesOfOptions =
     & {

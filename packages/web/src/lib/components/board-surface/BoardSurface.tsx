@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactElement, ReactNode, useId, useReducer, useRef } from 'react'
-import { _capitalise, _jitterPositions, _t, createID, createIdeaWithAuthor, createPosition, createSize, entriesOf, getRandomColour, HasSpatialNode_UI, pickFrom, SpatialNode, SpatialNode_UI } from "@ns-lab-klx/logic"
+import { _capitalise, _jitterPositions, _t, createID, createIdeaWithAuthor, createPosition, createSize, entriesOf, getRandomColour, HasSpatialNode_UI, pickFrom, SpatialNode, SpatialNode_UI } from "@ns-lab-knx/logic"
 import {
     HasData
     , Position
@@ -11,7 +11,7 @@ import {
     KeyOf,
     M_StateFromMap,
     PartialOrFull,
-} from '@ns-lab-klx/types'
+} from '@ns-lab-knx/types'
 import {
     _cn, _effect, _use_state
     , ObjectView
@@ -27,7 +27,7 @@ import {
     SurfaceNode,
     _cb,
     _memo
-} from "@ns-lab-klx/web"
+} from "@ns-lab-knx/web"
 import { Button, Input } from 'rsuite'
 import { BoardSurfaceControlPanel } from './BoardSurfaceControlPanel'
 
@@ -652,7 +652,7 @@ Unabled to [create/add] [payload].
             <BoardSurfaceControlPanel
                 buttonsMap={{
                     [`Add ${_capitalise(kind ?? "Item")}`]: _handleAddNodeButtonClick
-                    , Jitter: {
+                    , Sort: {
                         onClick: _handleLayoutButtonClick
                         , disabled: !state.payloads.size
                     }

@@ -2,12 +2,12 @@ import {
     HasPosition,
     Position,
     Position_KEYS
-} from "@ns-lab-klx/types"
+} from "@ns-lab-knx/types"
 
 import {
     areEqualPositions,
     createPosition  // <= questionable
-} from '@ns-lab-klx/logic'  // <= questionable
+} from '@ns-lab-knx/logic'  // <= questionable
 import { _effect, _memo, _use_state } from '../../utils'
 // import { reaction } from "mobx"
 

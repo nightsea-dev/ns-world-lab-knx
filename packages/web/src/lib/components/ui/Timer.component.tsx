@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { _cn, _effect, _use_state, PickHtmlAttributes, } from '../../utils'
-import { EventHandlersFromMap } from '@ns-lab-klx/types'
-import { padNumber as _p } from "@ns-lab-klx/logic"
+import { EventHandlersFromMap } from '@ns-lab-knx/types'
+import { padNumber as _p } from "@ns-lab-knx/logic"
 
 
 

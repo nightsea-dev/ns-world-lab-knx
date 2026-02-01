@@ -1,17 +1,16 @@
 import { FunctionComponent, ReactElement, ReactNode, useId, useRef } from "react"
-import { KeyOf, User } from "@ns-lab-klx/types"
-import { createIdeaWithAuthor, createUser, keysOf } from "@ns-lab-klx/logic"
+import { KeyOf, User } from "@ns-lab-knx/types"
+import { createIdeaWithAuthor, createUser, keysOf } from "@ns-lab-knx/logic"
 import {
     _cb, _effect, _memo, _use_state
-    , ObjectView, Page
-    , PickHtmlAttributes, SurfaceNode,
-    ToggleRS,
-    ToggleTW,
-    ViewContainer
-} from "@ns-lab-klx/web"
-import { Button, ButtonGroup, Nav, NavMenu, Toggle } from "rsuite"
-import { IdeasBoard, IdeasBoardProps } from "../board-surface"
-import { UserAdmin, UserAdminProps } from "../user-admin"
+    , ObjectView
+    , Page
+    , SurfaceNode
+    , ToggleRS
+    , ViewContainer
+} from "@ns-lab-knx/web"
+import { Nav } from "rsuite"
+import { IdeasBoard, IdeasBoardProps, UserAdmin, UserAdminProps } from "../../features"
 
 const FEATURES = {
     IdeasBoard
@@ -52,10 +51,7 @@ export const MainApp = ({
             } as IdeasBoardProps
 
             , userAdminProps: {
-                // loadUsersOnFirstRender: true
-                onUsersChange: ({
-                    users: loadedUsers
-                }) => _set_state({ loadedUsers })
+                onUsersChange: ({ users: loadedUsers }) => _set_state({ loadedUsers })
             } as UserAdminProps
 
         })
@@ -73,7 +69,7 @@ export const MainApp = ({
     return (
         <Page
             id={id}
-            data-main-app
+            data-web
             headerTitle={state.selectedFeatureKey}
             headerUser={state.currentUser}
             headerMidContent={(

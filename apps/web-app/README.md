@@ -1,6 +1,6 @@
-# main-app
+# web
 
-Primary React application for the NS-WORLD-LAB-KLX workspace.
+Primary React application for the NS-WORLD-LAB-knx workspace.
 
 This app integrates the shared graph logic and UI components to render
 interactive board-style surfaces and related admin features.
@@ -21,7 +21,7 @@ interactive board-style surfaces and related admin features.
 ```
 src/features/
   board-surface/    Spatial board and node surface
-  main-app/         App shell and routing
+  web/         App shell and routing
   user-admin/       User administration views
   _types/           Feature-local types
 ```
@@ -39,7 +39,7 @@ src/components/
 From the repository root:
 
 ```bash
-nx serve main-app
+nx serve web
 ```
 
 ---
@@ -48,9 +48,9 @@ nx serve main-app
 
 - Layout and scrolling concerns belong to layout primitives
   (not feature components).
-- Runtime logic must come from `@ns-lab-klx/logic`.
-- Type contracts must come from `@ns-lab-klx/types` (type-only imports).
-- Shared UI components come from `@ns-lab-klx/web`.
+- Runtime logic must come from `@ns-lab-knx/logic`.
+- Type contracts must come from `@ns-lab-knx/types` (type-only imports).
+- Shared UI components come from `@ns-lab-knx/web`.
 
 ---
 
@@ -59,7 +59,7 @@ nx serve main-app
 Production output is emitted to:
 
 ```
-apps/main-app/dist/
+apps/web/dist/
 ```
 
 The app consumes **built workspace packages**, not source code.

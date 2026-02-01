@@ -1,4 +1,4 @@
-import { Size } from "@ns-lab-klx/types";
+import { Size } from "@ns-lab-knx/types";
 export const EMPTY_Size = Object.freeze({
     width: 0
     , height: 0

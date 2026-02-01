@@ -1,0 +1,10 @@
+{
+    "name": "@ns-lab-knx/web-app",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "@ns-lab-knx/types": "file:../../packages/types",
+        "@ns-lab-knx/logic": "file:../../packages/logic",
+        "@ns-lab-knx/web": "file:../../packages/web"
+    }
+}

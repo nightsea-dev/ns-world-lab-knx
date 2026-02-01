@@ -1,4 +1,4 @@
-import { EventHandlersFromMap } from "@ns-lab-klx/types";
+import { EventHandlersFromMap } from "@ns-lab-knx/types";
 import { X, XIcon, LucideX } from "lucide-react";
 import { MouseEvent } from "react";
 

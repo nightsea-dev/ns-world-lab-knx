@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { createID } from '../primitives'
-import { Idea, IdeaWithAuthor } from '@ns-lab-klx/types'
+import { Idea, IdeaWithAuthor } from '@ns-lab-knx/types'
 import { createUser } from './create-user'
 import { getRandomColour } from '../../utils'
 

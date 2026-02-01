@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { Toggle, ToggleProps } from "rsuite"
 import { _cn } from "../../../utils"
-import { EventHandlersFromMap } from "@ns-lab-klx/types"
+import { EventHandlersFromMap } from "@ns-lab-knx/types"
 
 // ======================================== events
 export type ToggleRSEventsMap = {

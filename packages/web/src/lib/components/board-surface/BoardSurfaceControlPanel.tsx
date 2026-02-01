@@ -1,9 +1,9 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react"
 import { _cn } from "../../utils"
-import { EventHandlersFromMap, XOR } from "@ns-lab-klx/types"
-import { entriesOf } from "@ns-lab-klx/logic"
+import { EventHandlersFromMap, XOR } from "@ns-lab-knx/types"
+import { entriesOf } from "@ns-lab-knx/logic"
 import { Button, ButtonGroup, ButtonProps, Input, InputProps, StatLabel, Toggle } from "rsuite"
-import { ToggleRS } from "../ui"
+import { ButtonGroupRS, ButtonGroupRSProps, ToggleRS } from "../ui"
 
 
 // ======================================== events
@@ -24,15 +24,17 @@ export type BoardSurfaceControlPanelEventsMap = {
 // ======================================== props
 export type BoardSurfaceControlPanelProps =
     & {
-        buttonsMap: {
-            [k: string]: ButtonProps["onClick"] | ButtonProps
-        }
         numberOfItems?: number
         showInfo?: boolean
     }
+    & Pick<
+        ButtonGroupRSProps
+        , "buttonsMap"
+    >
     & Partial<
         & EventHandlersFromMap<BoardSurfaceControlPanelEventsMap>
     >
+
 
 // ======================================== component
 export const BoardSurfaceControlPanel = ({
@@ -92,28 +94,9 @@ export const BoardSurfaceControlPanel = ({
                     }
                 }}
             />
-            <ButtonGroup
-            >
-                {entriesOf(buttonsMap).map(([k, v], i) => {
-
-                    const p = (typeof (v) === "function"
-                        ? {
-                            onClick: v
-                        }
-                        : v
-                    ) as ButtonProps
-
-                    return (
-                        <Button
-                            key={k}
-                            children={k}
-                            {...p}
-                        />
-                    )
-
-                })}
-            </ButtonGroup>
-
+            <ButtonGroupRS
+                buttonsMap={buttonsMap}
+            />
         </div>
     )
 }
