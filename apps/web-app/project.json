@@ -1,5 +1,8 @@
 {
     "name": "@ns-lab-knx/web-app",
+    "tags": [
+        "layer:app"
+    ],
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "targets": {
         "serve": {
@@ -21,7 +24,9 @@
         },
         "build": {
             "executor": "@nx/vite:build",
-            "outputs": ["{options.outputPath}"],
+            "outputs": [
+                "{options.outputPath}"
+            ],
             "defaultConfiguration": "production",
             "options": {
                 "outputPath": "apps/web-app/dist"
@@ -36,7 +41,9 @@
             }
         },
         "preview": {
-            "dependsOn": ["build"],
+            "dependsOn": [
+                "build"
+            ],
             "executor": "@nx/vite:preview-server",
             "defaultConfiguration": "development",
             "options": {

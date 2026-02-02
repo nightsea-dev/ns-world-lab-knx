@@ -1,0 +1,8 @@
+{
+    "name": "@ns-lab-knx/web",
+    "tags": [
+        "layer:lib",
+        "lib:web"
+    ],
+    "$schema": "../../node_modules/nx/schemas/project-schema.json"
+}

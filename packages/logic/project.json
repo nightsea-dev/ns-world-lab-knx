@@ -1,0 +1,8 @@
+{
+    "name": "@ns-lab-knx/logic",
+    "tags": [
+        "layer:lib",
+        "lib:logic"
+    ],
+    "$schema": "../../node_modules/nx/schemas/project-schema.json"
+}

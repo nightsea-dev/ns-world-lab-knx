@@ -16,10 +16,35 @@ export default [
                     enforceBuildableLibDependency: true,
                     allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
                     depConstraints: [
+                        // {
+                        //     sourceTag: '*',
+                        //     onlyDependOnLibsWithTags: ['*'],
+                        // },
+
+                        // apps -> web, logic, types
                         {
-                            sourceTag: '*',
-                            onlyDependOnLibsWithTags: ['*'],
+                            sourceTag: 'layer:app',
+                            onlyDependOnLibsWithTags: ['layer:lib'],
                         },
+
+                        // web -> logic, types
+                        {
+                            sourceTag: 'lib:web',
+                            onlyDependOnLibsWithTags: ['lib:logic', 'lib:types'],
+                        },
+
+                        // logic -> types
+                        {
+                            sourceTag: 'lib:logic',
+                            onlyDependOnLibsWithTags: ['lib:types'],
+                        },
+
+                        // types -> nothing
+                        {
+                            sourceTag: 'lib:types',
+                            onlyDependOnLibsWithTags: [],
+                        },
+
                     ],
                 },
             ],
