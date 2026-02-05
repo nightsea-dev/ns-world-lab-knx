@@ -1,5 +1,5 @@
-import { PrimitiveValue } from "./primitive-value.js"
-import { UnionToIntersection } from "./union-to-intersection.js"
+import { PrimitiveValue } from "./primitive-value"
+import { UnionToIntersection } from "./union-to-intersection"
 
 export type FlattenKeys<
     T,

@@ -1,6 +1,7 @@
-import { _memo, Avatar, PickHtmlAttributes } from '@ns-lab-knx/web'
 import { ReactNode, useState } from 'react'
 import { HasAuthor, HasTitle, HasUser, User } from "@ns-lab-knx/types"
+import { PickHtmlAttributes } from '../../../utils'
+import { Avatar } from '../../ui'
 
 // ======================================== props
 export type HeaderContentWithUserProps =

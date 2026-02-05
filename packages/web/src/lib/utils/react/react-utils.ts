@@ -50,27 +50,37 @@ export const _use_state = <
                     ...p
                     , ...(isReducerFn ? arg_0(p) : arg_0)
                 })
-            // const reducerFn = (
-            //     (typeof (arg_0) === "function")
-            //         ? (p) => ({
-            //             ...p
-            //             , ...(isReducerFn ? arg_0(p) : arg_0)
-            //         })
-            //         : (p) => ({
-            //             ...p
-            //             , ...arg_0
-            //         })) as ReducerFn
 
             _set_state_0(reducerFn)
 
         }, [_set_state_0])
 
+        , _set_state_async = _cb([_set_state_0], async <
+            K extends StateKey
+        >(
+            partial = {} as PartialState<K>
+        ) => {
+            return new Promise<TState>(
+                res => {
+                    _set_state_0(p => {
+                        p = {
+                            ...p
+                            , ...partial
+                        }
+                        setTimeout(() => res(p))
+                        return p
+                    })
+                })
+        })
+
     return [
         state
         , setStateFn
+        , _set_state_async
     ] as [
             state: TState
             , setStateFn: typeof setStateFn
+            , _set_state_async: typeof _set_state_async
         ]
 
 }

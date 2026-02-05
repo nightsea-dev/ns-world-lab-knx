@@ -4,7 +4,7 @@ import {
 import { createPosition, createSize } from "../primitives";
 
 export const createTransform = (
-    o={} as Partial<Transformation>
+    o = {} as Partial<Transformation>
 ): Transformation => ({
     position: createPosition(o?.position)
     , size: createSize(o?.size)

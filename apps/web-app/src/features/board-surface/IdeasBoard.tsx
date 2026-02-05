@@ -1,63 +1,82 @@
 import {
     _effect
     , BoardSurfaceProps
-    , BoardSurface
+    , BoardSurfaceComponent,
+    HasCreatePayloadFn,
+    _memo,
+    _use_state
 } from '@ns-lab-knx/web'
 import {
     createIdeaWithAuthor
 } from "@ns-lab-knx/logic"
 import {
-    IdeaNodeComponent
-} from '../../components'
-import {
     IdeaWithAuthor
 } from '@ns-lab-knx/types'
+import { IdeaPayloadRenderer } from '../../components'
 
 // ======================================== CONST
-const APP_NAME = "@ns-lab-knx/web"
 // ======================================== props
 export type IdeasBoardProps =
     & Partial<
         & Pick<
             BoardSurfaceProps<IdeaWithAuthor>,
             | "data"
-            | "createPayloadFn"
             | "onNodesAdded"
             | "onNodesRemoved"
-            | "children"
-        // | "payloadRenderer"
         >
     >
 // ======================================== component
 export const IdeasBoard = ({
-    data
-    , createPayloadFn = createIdeaWithAuthor
-    , children = IdeaNodeComponent
+    data: data_IN
+    // , createPayloadFn = () => createIdeaWithAuthor()
+    // , children = IdeaPayloadRenderer
     , ...rest
 }: IdeasBoardProps
 ) => {
 
+    const [state, _set_state] = _use_state({
+        data: [] as IdeaWithAuthor[]
+        , isFirstRender: true
+    })
+
+    _effect([data_IN], () => {
+        if (!data_IN || data_IN === state.data) {
+            return
+        }
+        _set_state({
+            data: data_IN
+        })
+    })
+
     _effect([], () => {
-        document.title = APP_NAME
+
+        if (!state.isFirstRender || state.data.length) {
+            return
+        }
+
+        _set_state({
+            data: [createIdeaWithAuthor()]
+            , isFirstRender: false
+        })
     })
 
     return (
-        <BoardSurface
+        <BoardSurfaceComponent
             {...rest}
-            data={data}
-            createPayloadFn={createPayloadFn}
-            children={children}
-            kind="idea"
-        // createPayloadFn={createDataItemFn}
-        // kind="idea"
-        // data={data}
-        // payloadRenderer={() => {
-        //     return (
-        //         <IdeaNodeComponent
-        //         />
-        //     )
-        // }}
-        />
+            data={state.data}
+            // children={children}
+            createPayloadFnMap={{
+                "Add Idea": createIdeaWithAuthor
+            }}
+
+        >
+            {IdeaPayloadRenderer}
+            {/* {({ payload }) => {
+                return <IdeaPayloadRenderer
+                    payload={payload}
+                />
+            }} */}
+        </BoardSurfaceComponent>
     )
 
 }

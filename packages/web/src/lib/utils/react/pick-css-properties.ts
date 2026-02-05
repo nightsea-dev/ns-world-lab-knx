@@ -6,3 +6,7 @@ export type PickCssProperties<
 >
     = Pick<CSSProperties, K>
 
+
+
+export type HasBackgroundColor =
+    PickCssProperties<"backgroundColor">

@@ -1,31 +1,34 @@
-import { FunctionComponent, ReactElement, ReactNode, useId, useRef } from "react"
-import { KeyOf, User } from "@ns-lab-knx/types"
+import { ComponentProps, FunctionComponent, ReactElement, ReactNode, useId, useRef } from "react"
+import { KeyOf, SuffixedString, User } from "@ns-lab-knx/types"
 import { createIdeaWithAuthor, createUser, keysOf } from "@ns-lab-knx/logic"
 import {
     _cb, _effect, _memo, _use_state
-    , ObjectView
+    , HasSurfaceNode, ObjectView
     , Page
-    , SurfaceNode
+    , ShowInfo, SurfaceNode
     , ToggleRS
-    , ViewContainer
+    , WorkspaceView
 } from "@ns-lab-knx/web"
 import { Nav } from "rsuite"
-import { IdeasBoard, IdeasBoardProps, UserAdmin, UserAdminProps } from "../../features"
+import { IdeasBoard, IdeasBoardProps, KnownPayloadsBoard, KnownPayloadsBoardProps, UserAdmin, UserAdminProps } from "../../features"
 
-const FEATURES = {
+const FEATURES_MAP = {
     IdeasBoard
+    , KnownPayloadsBoard
     , UserAdmin
 }
-    , FEATURE_KEYS = keysOf(FEATURES).sort((a, b) => a.localeCompare(b))
+    , FEATURE_KEYS = keysOf(FEATURES_MAP).sort((a, b) => a.localeCompare(b))
 
-type FEATURES = typeof FEATURES
-type FeatureKey = KeyOf<FEATURES>
+type FEATURES_MAP = typeof FEATURES_MAP
+type FeatureKey = KeyOf<FEATURES_MAP>
 
 
 
 // ========================================
+const APP_NAME = "@ns-lab-knx/web-app"
+// ========================================
 export const MainApp = ({
-    initialFeatureKey = "IdeasBoard"
+    initialFeatureKey = "KnownPayloadsBoard"
 }: {
     initialFeatureKey?: FeatureKey
 }) => {
@@ -43,18 +46,36 @@ export const MainApp = ({
 
         })
 
+        , _set_nodes = ({
+            data
+        }: Parameters<Pick<Required<KnownPayloadsBoardProps>, "onNodesAdded" | "onNodesRemoved">["onNodesAdded" | "onNodesRemoved"]>[0]
+        ) => {
+            _set_state({
+                surfaceNodes: data.map(({
+                    surfaceNode: node
+                }) => node).filter(Boolean) as SurfaceNode<any>[]
+            })
+        }
+
         , _refs = useRef({
 
-            ideasBoardProps: {
+            "IdeasBoardProps": {
                 createDataItemFn: createIdeaWithAuthor
                 , data: [createIdeaWithAuthor()]
             } as IdeasBoardProps
 
-            , userAdminProps: {
+            , "KnownPayloadsBoardProps": {
+                onNodesAdded: _set_nodes
+                , onNodesRemoved: _set_nodes
+            } as KnownPayloadsBoardProps
+
+            , "UserAdminProps": {
                 onUsersChange: ({ users: loadedUsers }) => _set_state({ loadedUsers })
             } as UserAdminProps
 
-        })
+        } as {
+                [k in FeatureKey as  `${k}Props`]: ComponentProps<FEATURES_MAP[k]>
+            })
 
         , _handleClick = _cb((
             selectedFeatureKey: FeatureKey
@@ -65,11 +86,15 @@ export const MainApp = ({
             }))
         })
 
+    _effect([], () => {
+        document.title = APP_NAME
+    })
 
     return (
         <Page
             id={id}
             data-web
+            // className="relative flex-1 min-h-0 overflow-hidden"
             headerTitle={state.selectedFeatureKey}
             headerUser={state.currentUser}
             headerMidContent={(
@@ -98,31 +123,35 @@ export const MainApp = ({
                             </Nav.Item>
                         ))}
                     </Nav>
-                    <ToggleRS
+                    <ShowInfo
                         checked={state.showInfo}
                         onChange={({ value: showInfo }) => _set_state({ showInfo })}
-                    >
-                        Show Info
-                    </ToggleRS>
-
+                    />
                 </div>
             )}
         >
             {/* <TailwindSanity_02 /> */}
-            <ViewContainer
-                isVisible={state.selectedFeatureKey === "IdeasBoard"}
+            <WorkspaceView
+                isActive={state.selectedFeatureKey === "IdeasBoard"}
             >
                 <IdeasBoard
-                    {..._refs.current.ideasBoardProps}
+                    {..._refs.current.IdeasBoardProps}
                 />
-            </ViewContainer>
-            <ViewContainer
-                isVisible={state.selectedFeatureKey === "UserAdmin"}
+            </WorkspaceView>
+            <WorkspaceView
+                isActive={state.selectedFeatureKey === "UserAdmin"}
             >
                 <UserAdmin
-                    {..._refs.current.userAdminProps}
+                    {..._refs.current.UserAdminProps}
                 />
-            </ViewContainer>
+            </WorkspaceView>
+            <WorkspaceView
+                isActive={state.selectedFeatureKey === "KnownPayloadsBoard"}
+            >
+                <KnownPayloadsBoard
+                    {..._refs.current.KnownPayloadsBoardProps}
+                />
+            </WorkspaceView>
         </Page>
     )
 

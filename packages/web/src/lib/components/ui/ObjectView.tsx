@@ -1,7 +1,7 @@
 import React, { type CSSProperties, type ReactNode, useRef } from "react"
 // import { TagGroup, Tag } from "rsuite"
 import { NoData } from "./NoData"
-import { _memo, CssPosition, PickCssProperties, PickHtmlAttributes } from "../../utils"
+import { _cn, _memo, CssPosition, PickCssProperties, PickHtmlAttributes } from "../../utils"
 import { HasData, HasDepth, HasHeader, PickAndPrefixKeys, PickAndSuffixKeys, PrefixKeys, PrimitiveValue } from "@ns-lab-knx/types"
 import { _colours, entriesOf, EntriesOfOptions } from "@ns-lab-knx/logic"
 
@@ -74,9 +74,12 @@ export type ObjectViewProps<
             showOnlyArrayLength: boolean
             fixedAt: CssPosition
             relative: boolean
+            absolute: boolean
         }
         & PickAndSuffixKeys<"Keys", EntriesOfOptions, "sorted">
-        & PickCssProperties<"maxWidth" | "maxHeight" | "top" | "left">
+        & PickCssProperties<"maxWidth" | "maxHeight"
+            | "top" | "left" | "right" | "bottom"
+        >
         & PickHtmlAttributes<"className" | "style" | "onDoubleClick">
 
         & PrefixKeys<"stringTags_", Pick<TagGroupNSProps, "withRandomColour">>
@@ -176,10 +179,18 @@ export const ObjectView = <
 >({
     data
     , header
-    , relative = true
+    , absolute
+    , relative = !absolute //true
     , top
+    , right
+    , bottom
     , left
-    , fixedAt = relative ? undefined : { top, left }
+    , fixedAt = relative ? undefined : {
+        top
+        , right
+        , bottom
+        , left
+    }
     , maxWidth = "100vw"
     , maxHeight = "100vh"
     , sortedKeys
@@ -221,6 +232,8 @@ export const ObjectView = <
         <table
             {...rest}
             data-object-view
+            cellPadding={0}
+            cellSpacing={0}
             style={{
                 ...rest.style
                 , ...style2
@@ -231,7 +244,7 @@ export const ObjectView = <
             className={`
                     border
                     relative
-                    border-slate-200
+                    border-slate-600
                     rounded-md
                     overflow-hidden
 
@@ -240,22 +253,21 @@ export const ObjectView = <
                     text-slate-700
                     shadow-2xl
                     cursor-default
-
+                    p-0
                     ${rest.className ?? ""}
-      `}
+        `}
         >
             {header && (
                 <thead>
                     <tr>
                         <th
                             colSpan={2}
-                            style={{
-                                backgroundColor: "dodgerblue"
-                                , color: "white"
-                                , fontSize: 16
-                            }}
                         >
-                            {header}
+                            <div
+                                className="bg-[dodgerblue] px-2.5 text-[16px] text-white"
+                            >
+                                {header}
+                            </div>
                         </th>
                     </tr>
                 </thead>
@@ -290,5 +302,6 @@ export const ObjectView = <
                 ))}
             </tbody>
         </table>
+
     )
 }

@@ -1,48 +1,39 @@
 import { ReactNode } from "react"
-import { getRandomColour, getRandomColourRgbString, HasSpatialNode_UI } from "@ns-lab-knx/logic"
 import {
-    EventHandlersWithKindFromMap
-    , HasChildren
+    HasSpatialNode_UI,
+    SpatialNode
+} from "@ns-lab-knx/logic"
+import {
+    HasPartialChildren
     , HasPayload
-    , KindBase
-    , PayloadWithKind,
-    XOR
+    , PartialEventHandlersWithKindFromMap
+    , PayloadWithKind
 } from "@ns-lab-knx/types"
 import {
     SpatialNodeComponent
-    , SpatialNodeComponentEventHandlers, SpatialNodeComponentProps
+    , SpatialNodeComponentEventHandlers
+    , SpatialNodeComponentProps
 } from "./SpatialNode.component"
 import {
-    HasPayloadRenderer,
-    PayloadRenderer
+    PAYLOAD_RENDERERS
+    , PayloadRenderer
 } from "./PayloadRenderer"
-import {
-    DEFAULT_PayloadRenderer
-} from "./PayloadRenderer"
-import { _effect, _memo } from "../../utils"
+import { _effect, _getById, _memo } from "../../utils"
 
 
 
 // ======================================== types - graph/surface lexicon
-// export type PayloadWithKind<
-//     K extends KindBase
-// > =
-//     & PayloadWithKind<K>
-
 export type HasSurfacePayload<
-    // K extends KindBase
     P extends PayloadWithKind<any>
 > =
     & HasPayload<
         P
-    // & SurfacePayload<K>
     >
 
 export type HasSurfacePayloadCollection<
-    // K extends KindBase
     P extends PayloadWithKind<any>
 > = {
-    payloads: P[]// SurfacePayload<K>[]
+    payloads: P[]
 }
 
 
@@ -50,28 +41,23 @@ export type HasSurfacePayloadCollection<
  * * [SpatialNode_UI] with [KindedPayload]
  */
 export type SurfaceNode<
-    // K extends KindBase
     P extends PayloadWithKind<any>
 > =
     & HasSpatialNode_UI
     & HasSurfacePayload<P>
 
 export type HasSurfaceNode<
-    // K extends KindBase
     P extends PayloadWithKind<any>
 > = {
     surfaceNode: SurfaceNode<P>
 }
 // ======================================== events
 export type SurfaceNodeEvent<
-    // K extends KindBase
     P extends PayloadWithKind<any>
->
-    =
+> =
     & HasSurfaceNode<P>
 
 export type SurfaceNodeEventsMap<
-    // K extends KindBase
     P extends PayloadWithKind<any>
 >
     = {
@@ -80,101 +66,92 @@ export type SurfaceNodeEventsMap<
         , mount: SurfaceNodeEvent<P>
     }
 
+export type HasSurfaceNodeChildren<
+    P extends PayloadWithKind<any>
+> =
+    & HasPartialChildren<
+        ReactNode | PayloadRenderer<P>
+    >
+
 // ======================================== props
 export type SurfaceNodeProps<
-    //    K extends KindBase
     P extends PayloadWithKind<any>
 >
-    = Omit<
+    =
+    & HasSurfacePayload<P>
+    & HasSurfaceNodeChildren<P>
+
+    & Omit<
         SpatialNodeComponentProps,
         | "children"
         | "content"
         | "contentContainer"
         | keyof SpatialNodeComponentEventHandlers
     >
-    & HasSurfacePayload<P>
-    & {
-        children?: ReactNode | PayloadRenderer<P>
-    }
-    // & XOR<
-    //     HasPayloadRenderer<P>
-    //     , HasChildren<ReactNode>
-    // >
-    & Partial<
-        & EventHandlersWithKindFromMap<
-            SurfaceNodeEventsMap<P>
-        >
+
+    & PartialEventHandlersWithKindFromMap<
+        SurfaceNodeEventsMap<P>
     >
-// ========================================
+
+
+
+// ======================================== component
 /**
  * * [SpatialNode_UI] with [KindedPayload]
  * 
  * [component]
  */
-export const SurfaceNodeComponent
-    = <
-        //    K extends KindBase
-        P extends PayloadWithKind<any>
-    >({
-        payload
-        // , payloadRenderer: PayloadRenderer = DEFAULT_PayloadRenderer
-        , children = DEFAULT_PayloadRenderer
-        , onChange
-        , onCloseButtonClick
-        , onMount
-        , ...rest
-    }: SurfaceNodeProps<P>
-    ) => {
+export const SurfaceNodeComponent = <
+    P extends PayloadWithKind<any>
+>({
+    payload
+    , children = PAYLOAD_RENDERERS.ObjectViewRenderer
 
-        const PayloadRenderer: PayloadRenderer<P>
-            = typeof (children) === "function"
-                ? children
-                : () => children
+    , onChange
+    , onCloseButtonClick
+    , onMount
 
-        return (
-            <SpatialNodeComponent
-                {...rest}
+    , ...rest
+}: SurfaceNodeProps<P>
+) => {
 
-                onChange={({
-                    spatialNode
-                }) => {
-                    onChange?.({
-                        eventKind: "change"
-                        , surfaceNode: {
-                            payload
-                            , spatialNode
-                        }
-                    })
-                }}
+    const PayloadRenderer: PayloadRenderer<P>
+        = typeof (children) === "function"
+            ? children
+            : () => children
 
-                onCloseButtonClick={({
-                    spatialNode
-                }) => {
-                    onCloseButtonClick?.({
-                        eventKind: "closeButtonClick"
-                        , surfaceNode: {
-                            payload
-                            , spatialNode
-                        }
-                    })
-                }}
+    return (
+        <SpatialNodeComponent
+            {...rest}
 
-                onMount={({
-                    spatialNode
-                }) => {
-                    onMount?.({
-                        eventKind: "mount"
-                        , surfaceNode: {
-                            payload
-                            , spatialNode
-                        }
-                    })
-                }}
-            >
-                <PayloadRenderer
-                    {...{ payload }}
-                />
-            </SpatialNodeComponent>
-        )
+            onChange={({ spatialNode }) => {
+                onChange?.({
+                    eventKind: "change"
+                    , surfaceNode: { payload, spatialNode }
+                })
+            }}
 
-    }
+            onCloseButtonClick={({ spatialNode }) => {
+                onCloseButtonClick?.({
+                    eventKind: "closeButtonClick"
+                    , surfaceNode: { payload, spatialNode }
+                })
+            }}
+
+            onMount={({ spatialNode }) => {
+                onMount?.({
+                    eventKind: "mount"
+                    , surfaceNode: { payload, spatialNode }
+                })
+            }}
+        >
+            <PayloadRenderer payload={payload} />
+        </SpatialNodeComponent>
+    )
+
+}
+
+
+
+
+

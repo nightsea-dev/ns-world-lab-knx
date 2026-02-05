@@ -1,1 +1,2 @@
-export * from "./IdeaNode.component"
+export * from "./domain"
+export * from "./infra"

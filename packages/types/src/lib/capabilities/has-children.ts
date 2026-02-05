@@ -4,3 +4,7 @@ export type HasChildren<
 > = {
     children: C
 }
+
+export type HasPartialChildren<
+    C extends unknown = string
+> = Partial<HasChildren<C>>

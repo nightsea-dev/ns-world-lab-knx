@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { Toggle, ToggleProps } from "rsuite"
 import { _cn } from "../../../utils"
-import { EventHandlersFromMap } from "@ns-lab-knx/types"
+import { EventHandlersFromMap, HasName, HasPartialName } from "@ns-lab-knx/types"
 
 // ======================================== events
 export type ToggleRSEventsMap = {
@@ -12,10 +12,13 @@ export type ToggleRSEventsMap = {
 // ======================================== props
 export type ToggleRSProps =
     & Omit<ToggleProps, "label" | "onChange">
-    & {
-        label?: ReactNode
-    }
-    & EventHandlersFromMap<ToggleRSEventsMap>
+    & Partial<
+        & {
+            label: ReactNode
+            inline: boolean
+        }
+        & EventHandlersFromMap<ToggleRSEventsMap>
+    >
 
 // ======================================== component
 export const ToggleRS = (
@@ -24,6 +27,7 @@ export const ToggleRS = (
         , label
         , children = label
         , checked
+        , inline
         , className
         , onChange
         , ...rest
@@ -32,16 +36,21 @@ export const ToggleRS = (
 
     return (
         <div
+            data-toggle-rs
             className={_cn(
                 `
-                flex items-center gap-1 whitespace-nowrap text-[12px]
+                flex items-center 
+                gap-1 
+                whitespace-nowrap 
+                text-[12px]
                 border-[1px]
                 border-gray-200
                 rounded-[8px]
                 py-[6px]
                 px-[10px]
                 bg-white
-                `
+                ${inline ? "inline" : ""}
+                    `
                 , className
             )}
         >
@@ -54,7 +63,7 @@ export const ToggleRS = (
                 })}
             >
                 <div
-                    className="text-[12px]"
+                    className="text-[12px] pt-1"
                 >
                     {children}
                 </div>
@@ -62,3 +71,25 @@ export const ToggleRS = (
         </div>
     )
 }
+
+
+// ======================================== ShowInfo
+export type ShowInfoProps =
+    & ToggleRSProps
+    & HasPartialName
+
+export const ShowInfo = (
+    {
+        name = ""
+        , inline = true
+        , ...rest
+    }: ShowInfoProps
+) => (
+    <ToggleRS
+        {...rest}
+        data-show-info
+        inline={inline}
+    >
+        Show {name} Info
+    </ToggleRS>
+)

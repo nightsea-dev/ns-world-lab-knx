@@ -1,4 +1,4 @@
-import { KeyOf } from "./key-of.types.js";
+import { KeyOf } from "./key-of.types";
 
 // export type KeysWithValue<
 //     T extends Record<string, any>

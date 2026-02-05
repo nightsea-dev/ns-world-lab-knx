@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { createID } from '../primitives'
-import { Idea, IdeaWithAuthor } from '@ns-lab-knx/types'
+import { Idea, IdeaWithAuthor, IdeaWithKind } from '@ns-lab-knx/types'
 import { createUser } from './create-user'
 import { getRandomColour } from '../../utils'
 
@@ -8,8 +8,8 @@ import { getRandomColour } from '../../utils'
  * * depends on 
  *      * [faker]
  */
-export const createIdea = (
-    o = {} as Partial<Idea>
+export const createIdeaWithKind = (
+    o = {} as Partial<IdeaWithKind>
 ): Idea => {
     // const id = String(Date.now())
     return ({
@@ -18,6 +18,7 @@ export const createIdea = (
         , content: faker.lorem.paragraph(1)
         , color: getRandomColour().toRgbString()
         , ...o
+        , kind: "idea"
         // , author: createUser(o.)
         // , author: {
         //     uuid: faker.string.uuid(),
@@ -28,14 +29,14 @@ export const createIdea = (
         // type: 'idea',
         // position: { x: 40, y: 80 },
         // size: { width: 200, height: 200 },
-    } as Idea)
+    } as IdeaWithKind)
 }
     , createIdeaWithAuthor = (
         o = {} as Partial<IdeaWithAuthor>
     ): IdeaWithAuthor => {
         // const id = String(Date.now())
         return ({
-            ...createIdea()
+            ...createIdeaWithKind()
             , author: createUser(o?.author)
             , ...o
             // , author: {

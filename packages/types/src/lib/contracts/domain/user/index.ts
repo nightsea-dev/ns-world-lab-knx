@@ -1,1 +1,1 @@
-export * from "./user.contract.js"
+export * from "./user.contract"

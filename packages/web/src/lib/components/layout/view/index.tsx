@@ -1,1 +1,1 @@
-export * from "./ViewContainer"
+export * from "./WorkspaceView"

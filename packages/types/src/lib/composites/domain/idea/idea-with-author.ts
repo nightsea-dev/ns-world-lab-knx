@@ -1,4 +1,4 @@
-import { HasAuthor, IdeaWithKind } from "../../../contracts/index.js"
+import { HasAuthor, IdeaWithKind } from "../../../contracts/index"
 
 // ---------------------------------------- contracts
 export type IdeaWithAuthor =

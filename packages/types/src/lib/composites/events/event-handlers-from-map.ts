@@ -2,10 +2,29 @@ import { HasKind } from "../../capabilities"
 import { KeyOf } from "../../ts"
 
 
-export type EventHandler<
+type BaseEventHandler<
     E extends object
 >
     = (ev: E) => void
+
+export type EventHandler<
+    E extends object
+>
+    = E extends object
+    ? (
+        KeyOf<E> extends never
+        ? () => void
+        : BaseEventHandler<E>
+    )
+    : BaseEventHandler<E>
+
+export type HasEventHandler<
+    Sx extends string
+    , E extends object
+> = {
+        [k in `on${Capitalize<Sx>}`]: EventHandler<E>
+    }
+
 
 
 export type EventHandlersFromMap<
@@ -23,14 +42,19 @@ export type PartialEventHandlersFromMap<
 
 
 // ========================================
+
+export type HasEventKind<
+    K extends any = unknown
+> = {
+    eventKind: K
+}
+
 export type EventHandlersWithKindFromMap<
     EvMap extends Record<string, object>
 > = {
         [k in KeyOf<EvMap> as `on${Capitalize<k>}`]: EventHandler<
             & EvMap[k]
-            & {
-                eventKind: k
-            }
+            & HasEventKind<k>
         >
     }
 

@@ -1,76 +1,99 @@
 import { Rnd } from "react-rnd"
-// import { reaction } from "mobx"
 import {
     EventHandlersFromMap,
+    HasHeader,
+    HasId,
+    ID,
     KeyOf,
-    PickRequiredRestPartial,
+    SIZE_KEYS,
     Transformation,
     XOR,
 } from "@ns-lab-knx/types"
-import { _cn, _effect, _memo, PickCssProperties, PickHtmlAttributes } from "../../utils"
+import {
+    _cn, _effect, _getById, _memo, _use_state
+    , HasBackgroundColor
+    , PickHtmlAttributes
+} from "../../utils"
 import {
     _t,
     HasSpatialNode_UI,
 } from "@ns-lab-knx/logic"
 import {
-    ComponentProps
+    ComponentProps,
+    MouseEvent,
+    ReactNode,
+    useId,
+    useLayoutEffect,
+    useRef
 } from "react"
-import { useSpatialNode, UseSpatialNodeInput } from "../../hooks/"
-import { CloseButton, CloseButtonProps } from "../ui"
+import {
+    useSpatialNode
+    , UseSpatialNodeInput
+} from "../../hooks/"
+import {
+    CloseButton
+    , CloseButtonProps
+} from "../ui"
+
+type H = HTMLElement | undefined
 
 type _RndProps = ComponentProps<typeof Rnd>
+
+
 /**
  * * only what interests us
  */
-type _RndEventKey = KeyOf<Pick<
-    _RndProps,
-    | "onDragStart"
-    | "onDrag"
-    | "onDragStop"
-    | "onResizeStop"
->>
+type _RndEventKey = KeyOf<
+    Pick<
+        _RndProps,
+        | "onDragStart"
+        | "onDrag"
+        | "onDragStop"
+        | "onResizeStop"
+        | "onResize"
+        | "onResizeStart"
+    >>
+
 /**
- * * only what interests us
- */
+* * only what interests us
+*/
 type _RndEventHandlersMap = {
     [k in _RndEventKey]: NonNullable<_RndProps[k]>
 }
 
 
+// ======================================== helpers
+const _moveToFront = ({
+    id
+    , el = _getById(id!)
+}: XOR<
+    HasId
+    , {
+        el: HTMLElement
+    }
+>
+) => !el || el.parentElement!.append(el)
 
 // ======================================== events
+export type SpatialNodeComponentEvent
+    =
+    & HasSpatialNode_UI
+// & HasId
+// & {
+//     spatialNodeId: ID
+// }
+
 export type SpatialNodeComponentEventsMap = {
-    closeButtonClick: HasSpatialNode_UI
-    change: HasSpatialNode_UI
-    , mount: HasSpatialNode_UI
+    closeButtonClick: SpatialNodeComponentEvent
+    change: SpatialNodeComponentEvent
+    mount: SpatialNodeComponentEvent
 }
 export type SpatialNodeComponentEventHandlers =
     EventHandlersFromMap<
         SpatialNodeComponentEventsMap
     >
 // ======================================== props
-// type _WithContent =
-//     & PickRequiredRestPartial<
-//         & SpatialNodeContentContainerRendererProps
-//         & HasSpatialNodeContentContainerRenderer
-//         , "content"
-//     >
-
-
-// type _WithChildren = Required<
-//     & PickHtmlAttributes<"children">
-// >
-
-type A = Pick<
-    UseSpatialNodeInput,
-    | "initialSize"
-    | "initialPosition"
-    | "isObservable"
->
-
-
 export type SpatialNodeComponentProps =
-    & PickHtmlAttributes<"children">
     & Partial<
         & Pick<
             UseSpatialNodeInput,
@@ -80,14 +103,18 @@ export type SpatialNodeComponentProps =
             | "spatialNode"
         >
 
+        & HasHeader<ReactNode>
+        & HasBackgroundColor
         & PickHtmlAttributes<"className" | "style">
-        & PickCssProperties<"backgroundColor">
-
+        & PickHtmlAttributes<"children">
         & SpatialNodeComponentEventHandlers
+
+
     >
 
 
-
+const DRAG_HANDLE_CLASS_NAME
+    = "data-spatial-node-drag-handle" as const satisfies string
 // ======================================== component
 
 /**
@@ -104,62 +131,72 @@ export const SpatialNodeComponent = ({
 
     , className
     , style
-    , backgroundColor
-
-    // ---------- WithContent
-    // , content
-    // , contentContainerRenderer: R = DEFAULT_SpatialNodeContentContainer
 
     // ---------- WithChildren
+    , header
     , children
 
     , onChange
     , onCloseButtonClick
     , onMount
 
+    , backgroundColor
+
     , ...rest
+
 }: SpatialNodeComponentProps
 ) => {
 
+    const id = useId()
 
-    const { spatialNode } = useSpatialNode(
-        spatialNode_IN
-            ? {
-                isObservable
-                , spatialNode: spatialNode_IN
-                , onChange
-            }
-            : {
-                initialSize
-                , initialPosition
-                , isObservable
-                , onChange
-            })
+        , { current: _refs } = useRef({} as {
+            closeButton?: HTMLElement | null
+        })
+
+        , { spatialNode } = useSpatialNode(
+            spatialNode_IN
+                ? {
+                    isObservable
+                    , spatialNode: spatialNode_IN
+                    , onChange
+                }
+                : {
+                    initialSize
+                    , initialPosition
+                    , isObservable
+                    , onChange
+                })
 
         , _handleCloseButtonClick: CloseButtonProps["onClick"]
-            = () => {
+            = (ev: MouseEvent<HTMLButtonElement>) => {
+                debugger
                 onCloseButtonClick?.({ spatialNode })
             }
+
 
         ,
         /**
          * * only what interests us
          */
         _rndHandlers = {
-            onDrag: (ev, data) => {
+            onResize: (ev, direction, el, delta, position) => {
 
-                console.log("onDrag", {
-                    ev, data
-                })
+            }
+            , onResizeStart: (ev, direction, el) => {
+                _moveToFront({ id })
+            }
+            , onDrag: (ev, data) => {
+
+                // console.log("onDrag", {
+                //     ev, data
+                // })
 
             }
 
-            , onDragStart: (ev, data) => {
-
-                console.log("onDragStart", {
-                    ev, data
-                })
-
+            , onDragStart: (ev, {
+                node: el
+            }) => {
+                // _moveToFront({ id })
             }
 
             , onDragStop: (ev, data) => {
@@ -168,63 +205,59 @@ export const SpatialNodeComponent = ({
                     "node.position": spatialNode.position
                     , ev, data
                 })
+                // const el = ev.target as HTMLElement
+                // el.style.zIndex = ""
             }
 
-            , onResizeStop: (...args) => {
+            , onResizeStop: (ev, direction, el, delta, position) => {
 
-                const [e, dir, elementRef, delta, newPosition] = args
+                const [width, height] = SIZE_KEYS
+                    .map(k => spatialNode.size[k] + delta[k])
+                    , transformation = {
+                        size: { width, height }
+                        , position: position
+                    } as Transformation
 
-                    , transformation: Transformation = {
-                        size: {
-                            width: spatialNode.size.width + delta.width
-                            , height: spatialNode.size.height + delta.height
-                        }
-                        , position: newPosition
-                    }
-
-                console.log(
-                    _rndHandlers.onResizeStop.name
-                    , {
+                spatialNode
+                    .updateTransformation(
                         transformation
-                    })
+                    )
 
-                // to remain within the [KLX] given codeBase
-                //  spatialNode.updateSize(transformation.size)
-                // spatialNode.updatePosition(transformation.position)
-                spatialNode.updateTransformation(transformation)
-
-                // node.size = {
-                //     width: node.size.width + delta.width
-                //     , height: node.transformation.size.height + delta.height
-                // }
-
-                // node.position = newPosition
-
-                // node.updateSize({
-                //     width: node.size.width + delta.width
-                //     , height: node.transformation.size.height + delta.height
-                // })
-                // node.updatePosition(newPosition)
-                // node.updateSize(node.size.width + delta.width, node.transformation.size.height + delta.height)
-                // node.updatePosition(newPosition.x, newPosition.y)
+                // _moveToFront({ el })
 
             }
+            , onCloseButtonClick: () => {
 
+            }
         } as _RndEventHandlersMap
 
-    _effect([onMount], () => {
-        if (!onMount) {
-            return
+    useLayoutEffect(() => {
+
+
+
+        _refs.closeButton = document.querySelector(`[data-spatial-node-close-button="${id}"]`) as H
+
+        const node_header = document.querySelector(`[data-spatial-node-header="${id}"]`) as H
+        if (node_header) {
+            const close_button = node_header.querySelector("[data-close-button]") as H
+            console.log({
+                node_header
+                , close_button
+            })
+            // debugger
         }
-        onMount({
-            spatialNode
-        })
     })
+
+    _effect([onMount], () => {
+        onMount?.({ spatialNode })
+    })
+
 
     return (
         <Rnd
             {...rest}
-            data-graph-node-component
+            id={id}
+            data-spatial-node
             size={spatialNode.size}
             position={spatialNode.position}
             {..._rndHandlers}
@@ -241,26 +274,95 @@ export const SpatialNodeComponent = ({
                 , className
                 , (onCloseButtonClick ? `p-r-2` : undefined)
             )}
+            minWidth={10}
+            minHeight={10}
             style={{
                 ...style
-                , backgroundColor
                 , overflow: "hidden"
                 , alignItems: "baseline"
+                , backgroundColor
             }}
-        // style={{ background: node.color }}
+            dragHandleClassName={DRAG_HANDLE_CLASS_NAME}
         >
-            {onCloseButtonClick
-                && (
-                    <CloseButton
-                        onClick={_handleCloseButtonClick}
-                    />)
-            }
-            {children}
-            {/* {children ? children : (
-                <R
-                    content={content}
-                />
-            )} */}
+            <div
+                data-spatial-node-content-container={id}
+                className={_cn(
+                    "flex h-full w-full flex-col"
+                )}
+                onMouseDown={({
+                    currentTarget: el
+                }) => {
+
+                    _moveToFront({ id })
+
+                }}
+            >
+                <div
+                    data-spatial-node-header={id}
+                    className={_cn(
+                        DRAG_HANDLE_CLASS_NAME
+                        , `
+                        ---min-w-0 
+                        ---truncate 
+                        relative flex items-center 
+                        bg-[dodgerblue] text-white 
+                        px-2 
+                        cursor-grab 
+                        active:cursor-grabbing 
+                        shrink-0
+                        `
+                    )}
+                >
+                    {/* <div
+                        data-spatial-node-header-text-container={id}
+                        className="min-w-0 flex-1 truncate"
+                    >
+                    </div> */}
+                    {header || "Header (drag here)"}
+
+                    {onCloseButtonClick
+                        && (
+                            <CloseButton
+                                data-spatial-node-close-button={id}
+                                onClick={_handleCloseButtonClick}
+                                className={`
+                                    text-white absolute right-0 m-1
+                                    z-[1000]
+                                    `}
+                                style={{
+                                    position: "absolute"
+                                    , zIndex: 1000
+                                }}
+                                onPointerDownCapture={ev => ev.stopPropagation()}
+                            />)
+                    }
+                </div>
+
+                <div
+                    data-spatial-node-body
+                    className={_cn(
+                        "flex-1 min-h-0 w-full"
+                        , `
+                            h-full w-full overflow-auto 
+                            border-2 border-amber-600
+                            `
+                    )}
+                    onMouseDown={({
+                        currentTarget: el
+                    }) => {
+
+                        // debugger
+
+                        _moveToFront({ id })
+
+                    }}
+                >
+                    {children}
+                </div>
+            </div>
+
+
         </Rnd>
     )
 }
+

@@ -168,5 +168,8 @@ export type SpatialNode_UI
 
 export type HasSpatialNode_UI =
     & {
+        /**
+         * * [SpatialNode] instance
+         */
         spatialNode: SpatialNode_UI
     }

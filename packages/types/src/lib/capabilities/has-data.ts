@@ -4,3 +4,7 @@ export type HasData<
 > = {
     data: D
 }
+
+export type HasPartialData<
+    D extends any = unknown
+> = Partial<HasData<D>>

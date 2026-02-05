@@ -1,50 +1,59 @@
-import { ReactNode, useReducer } from "react"
-import { EventHandlersFromMap, HasNode, PickAndPrefixKeysAndCapitalise, XOR } from "@ns-lab-knx/types"
-import { _t, SpatialNode, SpatialNode_UI, SpatialNodeEventsMap, SpatialNodeInput } from "@ns-lab-knx/logic"
+import { useReducer } from "react"
+import {
+    EventHandlersFromMap
+    , PickAndPrefixKeysAndCapitalise
+    , XOR
+} from "@ns-lab-knx/types"
+import {
+    _t
+    , SpatialNode
+    , SpatialNodeInput
+    , SpatialNode_UI
+    , HasSpatialNode_UI
+} from "@ns-lab-knx/logic"
 import { _effect, _memo } from "../../utils"
-import { reaction } from "mobx"
 
 // ========================================
 export type UseSpatialNodeEventsMap = {
-    change: {
-        spatialNode: SpatialNode
-    }
+    change: HasSpatialNode_UI
 }
 
 // ========================================
 type A =
     & PickAndPrefixKeysAndCapitalise<"initial", SpatialNodeInput, | "size" | "position">
 
-type B = {
-    spatialNode: SpatialNode
-}
+// type B = HasSpatialNode_UI
 
 export type UseSpatialNodeInput =
     & Partial<
-        & XOR<A, B>
-        & Pick<SpatialNodeInput,
-            // | "onChange"
+        & XOR<
+            A
+            , HasSpatialNode_UI
+        >
+        & Pick<
+            SpatialNodeInput,
             | "isObservable"
         >
-        & EventHandlersFromMap<UseSpatialNodeEventsMap>
+        & EventHandlersFromMap<
+            UseSpatialNodeEventsMap
+        >
     >
 
 
 // ========================================
-/**
- * * will [_updateComponent] [onChange]
- */
-export const useSpatialNode = ({
-    initialSize
-    , initialPosition
-    , isObservable
+export const useSpatialNode = (
+    {
+        initialSize
+        , initialPosition
+        , isObservable
 
-    , spatialNode: spatialNode_IN
+        , spatialNode: spatialNode_IN
 
-    , onChange
-}: UseSpatialNodeInput
+        , onChange
 
-) => {
+    }: UseSpatialNodeInput
+): HasSpatialNode_UI => {
+
     const { spatialNode } = _memo([spatialNode_IN], () => {
         if (spatialNode_IN instanceof SpatialNode) {
             return {
@@ -63,7 +72,7 @@ export const useSpatialNode = ({
         , [_, _updateComponent] = useReducer(x => x + 1, 0)
 
     // could be replaced outside
-    spatialNode.onChange = (ev) => {
+    spatialNode.onChange = ev => {
 
         console.log(useSpatialNode.name, {
             "node.onChange": ev
@@ -78,10 +87,7 @@ export const useSpatialNode = ({
     }
 
     return {
-        /**
-         * * [SpatialNode] instance
-         */
-        spatialNode: spatialNode as SpatialNode_UI
+        spatialNode
     }
 
 }

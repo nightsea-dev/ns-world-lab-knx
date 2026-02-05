@@ -135,17 +135,6 @@ export const UsersTable = ({
                 , rest.className
             )}
         >
-            {/* <div>
-                <Toggle
-                    checked={state.tableRendererKey === "ScrollableHtmlTable"}
-                    checkedChildren="ScrollableHtmlTable"
-                    unCheckedChildren="TableRS"
-                    onChange={b => _set_state({
-                        tableRendererKey: b ? "ScrollableHtmlTable" : "TableRS"
-                    })}
-                    size='md'
-                />
-            </div> */}
             {(() => {
                 switch (state.tableRendererKey) {
                     case "ScrollableHtmlTable": {

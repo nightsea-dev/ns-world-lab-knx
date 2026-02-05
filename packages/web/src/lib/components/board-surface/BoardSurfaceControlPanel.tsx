@@ -1,9 +1,12 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react"
+import {
+
+} from "react"
 import { _cn } from "../../utils"
 import { EventHandlersFromMap, XOR } from "@ns-lab-knx/types"
-import { entriesOf } from "@ns-lab-knx/logic"
-import { Button, ButtonGroup, ButtonProps, Input, InputProps, StatLabel, Toggle } from "rsuite"
-import { ButtonGroupRS, ButtonGroupRSProps, ToggleRS } from "../ui"
+import {
+    Input
+} from "rsuite"
+import { ButtonGroupRS, ButtonGroupRSProps, ShowInfo, ToggleRS } from "../ui"
 
 
 // ======================================== events
@@ -26,6 +29,7 @@ export type BoardSurfaceControlPanelProps =
     & {
         numberOfItems?: number
         showInfo?: boolean
+        isDisabled?: boolean
     }
     & Pick<
         ButtonGroupRSProps
@@ -41,11 +45,13 @@ export const BoardSurfaceControlPanel = ({
     buttonsMap
     , numberOfItems
     , showInfo = true
+    , isDisabled
     , onChange
     , onEnterKey
 }: BoardSurfaceControlPanelProps
 ) => {
     numberOfItems = Math.max(1, numberOfItems || 1)
+    console.log({ buttonsMap })
     return (
         <div
             className={_cn(`
@@ -55,17 +61,15 @@ export const BoardSurfaceControlPanel = ({
                 `
             )}
         >
-            <ToggleRS
+            <ShowInfo
                 checked={showInfo}
+                name="BoardSurface"
                 size="xs"
                 onChange={({ value: showInfo }) => onChange?.({
                     numberOfItems
                     , showInfo
                 })}
-            >
-                Show Info
-            </ToggleRS>
-
+            />
             <Input
                 data-number-of-items-input
                 type="number"
@@ -74,7 +78,7 @@ export const BoardSurfaceControlPanel = ({
                 min={1}
                 max={10}
                 value={numberOfItems}
-                width={50}
+                width={60}
                 onChange={value => onChange?.({
                     numberOfItems: Number(value)
                     , showInfo
@@ -96,6 +100,7 @@ export const BoardSurfaceControlPanel = ({
             />
             <ButtonGroupRS
                 buttonsMap={buttonsMap}
+                disabled={isDisabled}
             />
         </div>
     )
